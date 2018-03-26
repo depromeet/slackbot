@@ -38,7 +38,8 @@ def send_off_work_reminder(event, context):
     oauth_token = os.environ['DPM_ADMIN_BOT_TOKEN']
     client = SlackClient(oauth_token)
 
-    response = client.api_call('chat.postMessage', channel='#lab', text='테스트 메시지 from remote')
+    response = client.api_call(
+        'chat.postMessage', channel='#general', text='삐빅. 퇴근시간입니다.')
 
     if response['ok'] is True:
         return {

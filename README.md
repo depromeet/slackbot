@@ -2,7 +2,7 @@
 
 # 디프만 슬랙 관리용 봇
 
-[![Build Status](https://travis-ci.org/depromeet/slackbot-management.svg?branch=master)](https://travis-ci.org/depromeet/slackbot-management) [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
+[![Build Status](https://travis-ci.org/depromeet/slackbot-management.svg?branch=master)](https://travis-ci.org/depromeet/slackbot-management) [![CircleCI](https://circleci.com/gh/depromeet/slackbot-management.svg?style=svg)](https://circleci.com/gh/depromeet/slackbot-management) [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 
 </div>
 
