@@ -19,6 +19,9 @@ service: management
 provider:
   name: aws
   runtime: python3.6
+  profile: default
+  region: ap-northeast-2
+  stage: prod
 
 # you can overwrite defaults here
 #  stage: dev
@@ -44,6 +47,12 @@ provider:
 #  environment:
 #    variable1: value1
 
+package:
+  exclude:
+    - .git/**
+    - .travis.yml
+    - .circleci/**
+
 plugins:
   - serverless-python-requirements
 
@@ -66,6 +75,9 @@ functions:
 
   archive_inactive_channels:
     handler: handler.archive_inactive_channels
+
+  send_off_work_reminder:
+    handler: handler.send_off_work_reminder
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
