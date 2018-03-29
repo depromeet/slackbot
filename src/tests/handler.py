@@ -2,6 +2,10 @@ import os
 import requests
 
 
+def test_root_handler(message):
+    pass
+
+
 def test_send_message_handler():
     bot_token = os.environ['DPM_ADMIN_BOT_TOKEN']
     headers = {

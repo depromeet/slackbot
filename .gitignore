@@ -30,3 +30,15 @@ node_modules/
 .vscode/
 
 .DS_Store
+
+# External libraries for deployment package
+certifi/
+certifi-2018.1.18.dist-info
+chardet/
+chardet-3.0.4.dist-info
+idna/
+idna-2.6.dist-info
+requests/
+requests-2.18.4.dist-info
+urllib3/
+urllib3-1.22.dist-info

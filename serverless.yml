@@ -7,28 +7,21 @@ provider:
   region: ap-northeast-2
   stage: prod
 
-plugins:
-  - serverless-python-requirements
-
-custom:
-  pythonRequirements:
-    dockerizePip: true
-
 package:
   exclude:
     - .git/
     - .travis.yml
     - LICENSE
     - README.md
-    - tests/
+    - src/tests/
     - .idea/
     - .vscode/
     - __pycache__/
 
 functions:
   root:
-    handler: handler.root_handler
-    description: 모든 핸들러의 root 입니다. 모든 슬랙봇 명령어를 열람할 수 있는 wiki 의 링크를 리턴합니다.
+    handler: src/handler.root_handler
+    description: 모든 핸들러의 root 입니다
     events:
       - http:
           path: /
@@ -37,12 +30,20 @@ functions:
           path: /
           method: get
 
+  displayCommands:
+    handler: src/handler.display_commands
+    description: 모든 명령어를 열람할 수 있는 wiki 링크를 리턴합니다
+    events:
+      - http:
+          path: commands
+          method: get
+
   # channels
   archiveInactiveChannels:
-    handler: channels/handler.archive_inactive_channels
+    handler: src/channels/archive_inactive.archive_inactive_channels
 
   sendOffWorkReminder:
-    handler: channels/handler.send_off_work_reminder
+    handler: src/channels/off_work.send_off_work_reminder
     description: 매일 오후 6시에 퇴근시간 알림 메시지를 보냅니다.
     events:
       - schedule:
