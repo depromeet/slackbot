@@ -57,7 +57,7 @@ def display_commands(event, context):
 
     response = {
         'statusCode': 200,
-        'body': 'https://github.com/depromeet/slackbot-management/wiki 에서 확인하세요!'
+        'body': 'https://github.com/depromeet/slackbot-management/docs 에서 확인하세요!'
     }
 
     return response
