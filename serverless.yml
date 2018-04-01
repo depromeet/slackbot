@@ -54,3 +54,12 @@ functions:
       - http:
           path: offwork
           method: get
+  
+  # manito
+  manito:
+    handler: src/manito/handler.slash_command_handler
+    desciption: 나의 마니또가 누구인지 알려줍니다.
+    events:
+      - http:
+          path: manito
+          method: post

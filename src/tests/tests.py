@@ -1,7 +1,7 @@
 import unittest
 
 from src.tests.handler import test_send_message_handler
-from src.utils import parse_command
+from src.utils import parse_command, trigger_link
 
 
 class SendMessageTest(unittest.TestCase):
@@ -20,3 +20,20 @@ class ParseCommandTest(unittest.TestCase):
         sample_input = '<@U9UFVQKLZ> ㅎㅇ'
         parsed = parse_command(sample_input)
         self.assertEqual(parsed, 'ㅎㅇ')
+
+
+class TriggerLinkTest(unittest.TestCase):
+    @unittest.skip('Function not yet implemented')
+    def test_triggers_link_properly(self):
+        sample_command = 'ㅎㅇ'
+        link = trigger_link(sample_command)
+        self.assertEqual(link, 'hi/')
+
+    @unittest.skip('Test not yet implemented')
+    def test_throws_error_when_command_not_found(self):
+        sample_command = 'ㅗ'
+        self.assertRaises(KeyError, sample_command)
+
+
+if __name__ == '__main__':
+    unittest.main()
