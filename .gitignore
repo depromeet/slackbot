@@ -42,3 +42,8 @@ requests/
 requests-2.18.4.dist-info
 urllib3/
 urllib3-1.22.dist-info
+
+docs/
+
+# other personal settings stored as json
+*.json

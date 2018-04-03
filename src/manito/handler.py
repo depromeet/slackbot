@@ -1,8 +1,8 @@
 import os
-import json
 import logging
 import requests
 from urllib.parse import parse_qs
+from src.manito.utills import find_users_manito
 
 
 def slash_command_handler(event, context):
@@ -28,21 +28,17 @@ def slash_command_handler(event, context):
             'statusCode': 200,
             'body': '뭔가 문제가 생겼습니다. 만든놈 @gyukebox 의 잘못이니 물어보세요.'
         }
+
+    logger.info(api_response)
+    requested_user_name = api_response['user']['real_name']
+    manito = find_users_manito(userid=requested_user_id)
+    if manito is None:
+        return {
+            'statusCode': 200,
+            'body': '뭔가 문제가 생겼습니다. 만든놈 @gyukebox 의 잘못이니 물어보세요.'
+        }
     else:
-        logger.info(api_response)
-        requested_user_name = api_response['user']['real_name']
-        with open('manito.json', encoding='utf8') as file:
-            manito_list = json.load(file)
-            try:
-                manito = manito_list[requested_user_id]
-                response = '\n{} 님의 마니또는 {} 님 입니다!'.format(
-                    requested_user_name, manito)
-                return {
-                    'statusCode': 200,
-                    'body': response
-                }
-            except KeyError:
-                return {
-                    'statusCode': 200,
-                    'body': '뭔가 문제가 생겼습니다. 만든놈 @gyukebox 잘못이니 물어보세요.'
-                }
+        return {
+            'statusCode': 200,
+            'body': '{} 님의 마니또는 {} 님 입니다!'.format(requested_user_name, manito)
+        }
