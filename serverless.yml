@@ -63,3 +63,15 @@ functions:
       - http:
           path: manito
           method: post
+
+  # 오늘의 백준 문제
+  todayBaekJoon:
+    handler: src/boj/handler.boj_problem_fetcher
+    description: 백준에서 랜덤하게 알고리즘 문제 한 문제씩 가져옵니다
+    events:
+      - http:
+          path: boj
+          method: get
+      - http:
+          path: boj
+          method: post

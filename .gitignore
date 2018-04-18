@@ -44,6 +44,3 @@ urllib3/
 urllib3-1.22.dist-info
 
 docs/
-
-# other personal settings stored as json
-*.json

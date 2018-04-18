@@ -1,3 +1,7 @@
+import os
+import requests
+
+
 def parse_command(command):
     """
     @<USERID> 을 제외한 실제 명령어를 리턴해준디.
@@ -15,3 +19,19 @@ def trigger_link(command):
     :return:
     """
     pass
+
+
+def get_slack_api_response(url, **kwargs):
+    """
+    slack api 를 호출하여 응답을 리턴합니다.
+    :param url: api 호출 url
+    :return:
+    """
+    token = os.environ['DPM_ADMIN_BOT_TOKEN']
+
+    print(url)
+    print(kwargs)
+
+
+if __name__ == '__main__':
+    get_slack_api_response('url.com', token='token', channel='channel')
