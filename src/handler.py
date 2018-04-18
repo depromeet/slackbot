@@ -1,52 +1,36 @@
 import json
 import logging
-import os
-
-import requests
-from src.utils import parse_command
 
 
 def root_handler(event, context):
     logger = logging.getLogger()
     logger.setLevel('INFO')
-    logger.info(event)
-    response = {'statusCode': 200}
+    logger.info('Got request: \n{}'.format(event))
 
-    if event['httpMethod'] == 'POST':
-        body = json.loads(event['body'], encoding='utf8')['event']
-        logger.info(body)
+    response = {
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        },
+        'statusCode': 200
+    }
 
-        # TODO parse command and set appropriate request url
-        command = parse_command(body['text'])
-
-        bot_token = os.environ['DPM_ADMIN_BOT_TOKEN']
-        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-        body = {
-            'token': bot_token,
-            'channel': body['channel'],
-            'text': '오호, 저를 부르셨군요? 입력하신 명령어 : {}'.format(command)
-        }
-
-        api_response = requests.post(
-            'https://slack.com/api/chat.postMessage', data=body, headers=headers).json()
-        if api_response['ok'] is True:
-            logger.info('Slack API Response: \n{}'.format(
-                json.dumps(api_response, ensure_ascii=False)))
-        else:
-            logger.setLevel('ERROR')
-            logger.error('Error on Slack API Response: \n{}'.format(
-                json.dumps(api_response, ensure_ascii=False)))
-
-        # temp
+    try:
         response['body'] = json.dumps({
-            'ok': True,
-            'message': 'Successfully responded!'
+            'response_type': 'in_channel',
+            'text': '호오, 저를 부르셨군요? {}'.format(event['body'])
         })
-    else:
-        response['body'] = '디프만 슬랙에 봇이 언급되면 불리는 api 입니다. 이 메시지는 api 를 GET 요청으로 호출했을 때 나타납니다.'
+    except Exception as err:
+        logger.setLevel('ERROR')
+        logger.exception(err, exc_info=True)
+        response['body'] = json.dumps({
+            'response_type': 'ephemeral',
+            'text': '뭔가 잘못됬습니다. 만든놈 @gyukebox 의 잘못이니 그에게 물어보세요.'
+        })
 
     logger.setLevel('INFO')
-    logger.info('Will respond with: \n{} \n'.format(response))
+    logger.info('Will respond with: \n{}'.format(response))
+
     return response
 
 
@@ -59,5 +43,6 @@ def display_commands(event, context):
         'statusCode': 200,
         'body': 'https://github.com/depromeet/slackbot-management/docs 에서 확인하세요!'
     }
+    logger.info('Will respond with: \n{}'.format(response))
 
     return response
