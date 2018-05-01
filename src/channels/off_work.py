@@ -19,7 +19,8 @@ def send_off_work_reminder(event, context):
         'text': '삐빅. 퇴근시간입니다.'
     }
 
-    slack_api_response = requests.post('https://slack.com/api/chat.postMessage', data=body, headers=headers).json()
+    slack_api_response = requests.post(
+        'https://slack.com/api/chat.postMessage', data=body, headers=headers).json()
     response = {
         'body': json.dumps(slack_api_response)
     }
@@ -29,6 +30,7 @@ def send_off_work_reminder(event, context):
         logger.info('Got Slack API Response: {}'.format(slack_api_response))
     else:
         response['statusCode'] = 500
-        logger.error('Error on Slack API Response: {}'.format(slack_api_response))
+        logger.error('Error on Slack API Response: {}'.format(
+            slack_api_response))
 
     return response

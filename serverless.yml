@@ -7,29 +7,7 @@ provider:
   region: ap-northeast-2
   stage: prod
 
-package:
-  exclude:
-    - .git/
-    - .travis.yml
-    - LICENSE
-    - README.md
-    - src/tests/
-    - .idea/
-    - .vscode/
-    - __pycache__/
-
 functions:
-  root:
-    handler: src/handler.root_handler
-    description: 모든 핸들러의 root 입니다
-    events:
-      - http:
-          path: /
-          method: post
-      - http:
-          path: /
-          method: get
-
   displayCommands:
     handler: src/handler.display_commands
     description: 모든 명령어를 열람할 수 있는 wiki 링크를 리턴합니다
@@ -38,10 +16,11 @@ functions:
           path: commands
           method: get
 
-  # channels
+  # 비활성 채널 archive
   archiveInactiveChannels:
     handler: src/channels/archive_inactive.archive_inactive_channels
 
+  # 퇴근 알리미
   sendOffWorkReminder:
     handler: src/channels/off_work.send_off_work_reminder
     description: 매일 오후 6시에 퇴근시간 알림 메시지를 보냅니다.
@@ -54,12 +33,36 @@ functions:
       - http:
           path: offwork
           method: get
-  
-  # manito
-  manito:
-    handler: src/manito/handler.slash_command_handler
-    desciption: 나의 마니또가 누구인지 알려줍니다.
+
+  # 오늘의 백준 문제
+  todayBaekJoon:
+    handler: src/boj/handler.boj_problem_fetcher
+    description: 백준에서 랜덤하게 알고리즘 문제 한 문제씩 가져옵니다
     events:
       - http:
-          path: manito
+          path: boj
+          method: get
+      - http:
+          path: boj
           method: post
+
+  # 오늘의 무료책
+  todayFreeBook:
+    handler: src/packt/handler.free_ebook_fetcher
+    description: packtpub 에서 오늘의 무료 e북을 하루에 한번씩 가져옵니다
+    events:
+      - http:
+          path: packt
+          method: get
+      - schedule:
+          name: execute-daily-9pm
+          description: 매일 오전 9시에 해당 함수를 호출합니다.
+          rate: cron(0 0 ? * MON-FRI *)
+          enabled: true
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
