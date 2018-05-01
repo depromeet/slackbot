@@ -1,0 +1,29 @@
+{
+  "name": "depromeet-slackbot-api",
+  "version": "0.0.1",
+  "description": "디프만 슬랙봇 api",
+  "main": "handler.py",
+  "scripts": {
+    "test": "python -m unittest src/**/tests.py --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/depromeet/slackbot-management.git"
+  },
+  "keywords": [
+    "slackbot",
+    "api"
+  ],
+  "author": "Byeong Gyu Choi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/depromeet/slackbot-management/issues"
+  },
+  "homepage": "https://github.com/depromeet/slackbot-management#readme",
+  "dependencies": {
+    "serverless": "^1.26.1"
+  },
+  "devDependencies": {
+    "serverless-python-requirements": "^4.0.2"
+  }
+}
