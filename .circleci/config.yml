@@ -5,7 +5,6 @@ jobs:
       - image: choib24/dpm-slackbot-management
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           command: |
             python3.6 -m venv venv
@@ -13,7 +12,6 @@ jobs:
             pip install -U pip
             pip install -r requirements.txt
             npm install
-            npx sls package
 
   test:
     docker:
