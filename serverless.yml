@@ -5,7 +5,21 @@ provider:
   runtime: python3.6
   profile: default
   region: ap-northeast-2
-  stage: prod
+
+package:
+  exclude:
+    - node_modules/**
+    - .git/**
+    - .gitignore
+    - .travis.yml
+    - Dockerfile
+    - LICENSE
+    - package.json
+    - package-lock.json
+    - README.md
+    - yarn.lock
+    - venv/**
+    - .circleci/**
 
 functions:
   displayCommands:
