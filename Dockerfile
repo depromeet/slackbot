@@ -20,3 +20,6 @@ RUN curl -L https://deb.nodesource.com/setup_8.x -o node_install.sh && \
     apt-get install -y nodejs && \
     npm install -g npm  && \
     npm install -g npx
+
+ADD . /project
+WORKDIR /project

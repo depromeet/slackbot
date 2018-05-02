@@ -80,3 +80,4 @@ plugins:
 custom:
   pythonRequirements:
     dockerizePip: true
+    dockerImage: choib24/dpm-slackbot-management
