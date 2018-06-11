@@ -3,7 +3,7 @@ import logging
 import requests
 
 
-def free_ebook_fetcher(event, context):
+def handler(event, context):
     logger = logging.getLogger()
     logger.setLevel('INFO')
     logger.info('Got request : \n{}'.format(event))

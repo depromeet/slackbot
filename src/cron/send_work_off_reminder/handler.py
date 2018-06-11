@@ -4,7 +4,7 @@ import logging
 import requests
 
 
-def send_off_work_reminder(event, context):
+def handler(event, context):
     logger = logging.getLogger()
     logger.setLevel('INFO')
     logger.info('Got request: {}'.format(event))
