@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/depromeet/slackbot-management#readme",
   "dependencies": {
-    "serverless": "^1.26.1"
+    "serverless": "^1.27.3"
   },
   "devDependencies": {
     "serverless-python-requirements": "^4.0.2"

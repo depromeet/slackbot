@@ -4,7 +4,7 @@ import logging
 import requests
 
 
-def send_off_work_reminder(event, context):
+def handler(event, context):
     logger = logging.getLogger()
     logger.setLevel('INFO')
     logger.info('Got request: {}'.format(event))
@@ -20,7 +20,10 @@ def send_off_work_reminder(event, context):
     }
 
     slack_api_response = requests.post(
-        'https://slack.com/api/chat.postMessage', data=body, headers=headers).json()
+        'https://slack.com/api/chat.postMessage', data=body, headers=headers
+    )
+    slack_api_response = slack_api_response.json()
+
     response = {
         'body': json.dumps(slack_api_response)
     }
