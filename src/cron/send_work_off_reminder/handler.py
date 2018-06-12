@@ -1,39 +1,14 @@
-import os
-import json
-import logging
-import requests
+from src.utils.http import LambdaResponse, ExceptionHandler
+from src.utils.logging import Logger
+from src.utils.slack import SlackMessageWriter
 
 
+@LambdaResponse
+@SlackMessageWriter
+@ExceptionHandler
+@Logger
 def handler(event, context):
-    logger = logging.getLogger()
-    logger.setLevel('INFO')
-    logger.info('Got request: {}'.format(event))
-
-    bot_token = os.environ['DPM_ADMIN_BOT_TOKEN']
-    headers = {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
-    body = {
-        'token': bot_token,
-        'channel': '#general',
+    return {
+        'channel': 'lab',
         'text': '삐빅. 퇴근시간입니다.'
     }
-
-    slack_api_response = requests.post(
-        'https://slack.com/api/chat.postMessage', data=body, headers=headers
-    )
-    slack_api_response = slack_api_response.json()
-
-    response = {
-        'body': json.dumps(slack_api_response)
-    }
-
-    if slack_api_response['ok'] is True:
-        response['statusCode'] = 200
-        logger.info('Got Slack API Response: {}'.format(slack_api_response))
-    else:
-        response['statusCode'] = 500
-        logger.error('Error on Slack API Response: {}'.format(
-            slack_api_response))
-
-    return response
