@@ -43,7 +43,7 @@ functions:
     description: packtpub 에서 오늘의 무료 e북을 하루에 한번씩 가져옵니다
     events:
       - schedule:
-          name: execute-daily-9pm
+          name: execute-daily-9am
           description: 매일 오전 9시에 해당 함수를 호출합니다.
           rate: cron(0 0 ? * MON-FRI *)
           enabled: true

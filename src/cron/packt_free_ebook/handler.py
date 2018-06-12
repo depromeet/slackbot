@@ -1,33 +1,23 @@
 import os
 import logging
 import requests
+from src.cron.packt_free_ebook.utils import get_today_free_ebook
 
 
 def handler(event, context):
     logger = logging.getLogger()
     logger.setLevel('INFO')
-    logger.info('Got request : \n{}'.format(event))
 
-    response = {
-        'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        },
-    }
-
-    # TODO get to packtpub
-    url = ''
-
-    # TODO scrape ebook title(asynchronus way if possible)
-    ebook_title = ''
-
-    logger.info('오늘의 무료책 제목 : {}\n'.format(ebook_title))
+    response = {}
 
     token = os.environ['DPM_ADMIN_BOT_TOKEN']
     params = {
         'token': token,
         'channel': '개발',
-        'text': '(베타) 오늘의 무료책 : {}\n{}'.format(ebook_title, url)
+        'text': get_today_free_ebook(),
+        'unfurl_links': True,
+        'unfurl_media': True,
+        'username': '개발책 읽어주는 여자',
     }
 
     slack_api_response = requests.post(
