@@ -43,7 +43,10 @@ jobs:
           name: deploy to development stage
           command: |
             . venv/bin/activate
-            npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+            echo $AWS_ACCESS_KEY_ID
+            echo $AWS_SECRET_ACCESS_KEY
+            npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --overwrite
+            cat ~/.aws/credentials
             python deploy.py dev
 
   deploy-prod:
@@ -66,7 +69,7 @@ jobs:
           name: deploy to production stage
           command: |
             . venv/bin/activate
-            npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+            npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --overwrite
             python deploy.py prod
 
 workflows:
