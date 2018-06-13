@@ -1,9 +1,10 @@
 version: 2
+
 jobs:
   build:
     docker:
       - image: choib24/ubuntu-python3-node8
-      
+
     steps:
       - checkout
 
@@ -45,7 +46,7 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
             npm install
-      
+
           name: deploy to development stage
           command: |
             . venv/bin/activate
@@ -73,26 +74,27 @@ jobs:
             npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
             python deploy.py prod
 
-workflows:	
-  version: 2	
-  deployment-process:	
-    jobs:	
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
       - build
-      - deploy-dev:	
-          requires:	
+      - deploy-dev:
+          requires:
             - build
-          filters:	
-            branches:	
-              only:	develop	
-      - hold:	
-          type: approval	
-          requires:	
+          filters:
+            branches:
+              only: develop
+      - hold:
+          type: approval
+          requires:
             - build
-            - deploy-dev	
-      - deploy-prod:	
-          requires:	
-              - build
-              - deploy-dev	
-          filters:	
-            branches:	
+          filters:
+            branches:
+              only: master
+      - deploy-prod:
+          requires:
+              - hold
+          filters:
+            branches:
               only: master
