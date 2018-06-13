@@ -1,10 +1,11 @@
 import os
 import requests
+from src import ENV
 
-
-TOKEN = os.environ['DPM_ADMIN_BOT_TOKEN']
 
 URL = 'https://slack.com/api/chat.postMessage'
+
+SLACK_BOT_TOKEN = os.environ['DPM_ADMIN_BOT_TOKEN']
 
 
 class SlackMessageWriter:
@@ -20,7 +21,10 @@ class SlackMessageWriter:
         params = self.handler(event, context)
 
         if 'channel' in params and 'text' in params:
-            params['token'] = TOKEN
+            if ENV != 'production':
+                params['channel'] = 'lab'
+
+            params['token'] = SLACK_BOT_TOKEN
             requests.post(URL, data=params)
             del params['token']
 

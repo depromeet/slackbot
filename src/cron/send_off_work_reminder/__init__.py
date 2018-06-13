@@ -9,6 +9,6 @@ from src.utils.slack import SlackMessageWriter
 @Logger
 def handler(event, context):
     return {
-        'channel': 'lab',
+        'channel': 'general',
         'text': '삐빅. 퇴근시간입니다.'
     }

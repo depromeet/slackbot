@@ -5,9 +5,6 @@ ENV PATH /usr/local/bin:$PATH
 RUN apt-get -y update
 RUN apt-get install -y curl software-properties-common build-essential git apt-transport-https ca-certificates
 
-# installing docker
-RUN curl -fsSL https://get.docker.com/ | sh
-
 # install python 3.6 & virtualenv
 RUN add-apt-repository -y ppa:jonathonf/python-3.6 && \
     apt-get -y update && \
