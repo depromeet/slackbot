@@ -47,6 +47,7 @@ jobs:
             pip install -r requirements.txt
             npm install
 
+      - run:
           name: deploy to development stage
           command: |
             . venv/bin/activate
@@ -67,10 +68,11 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
             npm install
-      
+            
+      - run:
           name: deploy to production stage
           command: |
-            .venv/bin/activate
+            . venv/bin/activate
             npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
             python deploy.py prod
 
