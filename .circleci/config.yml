@@ -27,7 +27,9 @@ jobs:
 
       - run:
           name: run unit tests
-          command: python -m unittest src/tests/*.py
+          command: |
+            . venv/bin/activate
+            python -m unittest src/tests/*.py
   
   deploy-dev:
     docker:
@@ -46,6 +48,7 @@ jobs:
       
           name: deploy to development stage
           command: |
+            . venv/bin/activate
             npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
             python deploy.py dev
 
@@ -66,6 +69,7 @@ jobs:
       
           name: deploy to production stage
           command: |
+            .venv/bin/activate
             npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
             python deploy.py prod
 
@@ -83,12 +87,12 @@ workflows:
       - hold:	
           type: approval	
           requires:	
-           - build
-           - deploy-dev	
-      - deploy-prod:	
-          requires:	
             - build
             - deploy-dev	
+      - deploy-prod:	
+          requires:	
+              - build
+              - deploy-dev	
           filters:	
             branches:	
               only: master
