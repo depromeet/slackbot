@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-and-test:
+  build:
     docker:
       - image: choib24/ubuntu-python3-node8
       
@@ -40,18 +40,18 @@ jobs:
     steps:
       - checkout
     
-    - run:
-        name: install dependencies
-        command: |
-          python3 -m venv venv
-          . venv/bin/activate
-          pip install -r requirements.txt
-          npm install
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            npm install
       
-        name: deploy to development stage
-        command: |
-          npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
-          python deploy.py dev
+          name: deploy to development stage
+          command: |
+            npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+            python deploy.py dev
 
   deploy-prod:
     docker:
@@ -62,38 +62,38 @@ jobs:
     steps:
       - checkout
     
-    - run:
-        name: install dependencies
-        command: |
-          python3 -m venv venv
-          . venv/bin/activate
-          pip install -r requirements.txt
-          npm install
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            npm install
       
-        name: deploy to production stage
-        command: |
-          npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
-          python deploy.py prod
+          name: deploy to production stage
+          command: |
+            npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+            python deploy.py prod
 
 workflows:	
   version: 2	
   deployment-process:	
     jobs:	
-      - build-and-test	
+      - build
       - deploy-dev:	
           requires:	
-            - build-and-test	
+            - build
           filters:	
             branches:	
               only:	develop	
       - hold:	
           type: approval	
           requires:	
-           - build-and-test	
+           - build
            - deploy-dev	
       - deploy-prod:	
           requires:	
-            - build-and-test	
+            - build
             - deploy-dev	
           filters:	
             branches:	
