@@ -4,8 +4,6 @@ jobs:
     docker:
       - image: choib24/ubuntu-python3-node8
       
-    working_directory: ~/repo
-
     steps:
       - checkout
 
@@ -35,8 +33,6 @@ jobs:
     docker:
       - image: choib24/ubuntu-python3-node8
 
-    working_directory: ~/repo
-
     steps:
       - checkout
     
@@ -56,8 +52,6 @@ jobs:
   deploy-prod:
     docker:
       - image: choib24/ubuntu-python3-node8
-
-    working_directory: ~/repo
 
     steps:
       - checkout
