@@ -8,27 +8,32 @@ provider:
 
 package:
   exclude:
+    - .circleci/**
+    - .idea/**
+    - .vscode/**
     - node_modules/**
     - .git/**
     - .gitignore
     - .travis.yml
     - Dockerfile
+    - deploy.py
     - LICENSE
     - package.json
     - package-lock.json
     - README.md
+    - requirements.txt
     - yarn.lock
     - venv/**
 
 functions:
   # 비활성 채널 archive
   archiveInactiveChannels:
-    handler: src/cron/archive_inactive_channels/handler.handler
+    handler: src/cron/archive_inactive_channels.handler
     description: 30일 동안 대화가 없는 슬랙 채널을 아카이브합니다.
 
   # 퇴근 알리미
   sendOffWorkReminder:
-    handler: src/cron/send_work_off_reminder/handler.handler
+    handler: src/cron/send_off_work_reminder.handler
     description: 매일 오후 6시에 퇴근시간 알림 메시지를 보냅니다.
     events:
       - schedule:
@@ -39,18 +44,11 @@ functions:
 
   # 오늘의 무료책
   todayFreeBook:
-    handler: src/cron/packt_free_ebook/handler.handler
+    handler: src/cron/packt_free_ebook.handler
     description: packtpub 에서 오늘의 무료 e북을 하루에 한번씩 가져옵니다
     events:
       - schedule:
-          name: execute-daily-9pm
-          description: 매일 오전 9시에 해당 함수를 호출합니다.
-          rate: cron(0 0 ? * MON-FRI *)
+          name: execute-daily-10am
+          description: 매일 오전 10시에 해당 함수를 호출합니다.
+          rate: cron(0 1 ? * * *)
           enabled: true
-
-plugins:
-  - serverless-python-requirements
-
-custom:
-  pythonRequirements:
-    dockerizePip: true

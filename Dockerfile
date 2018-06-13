@@ -5,13 +5,10 @@ ENV PATH /usr/local/bin:$PATH
 RUN apt-get -y update
 RUN apt-get install -y curl software-properties-common build-essential git apt-transport-https ca-certificates
 
-# installing docker
-RUN curl -fsSL https://get.docker.com/ | sh
-
 # install python 3.6 & virtualenv
 RUN add-apt-repository -y ppa:jonathonf/python-3.6 && \
     apt-get -y update && \
-    apt-get install -y python3.6 python3-pip python3.6-dev python3.6-venv && \
+    apt-get install -y python3.6 python3-pip python3.6-dev python3-venv && \
     pip3 install -U pip
 
 # install nodejs 8.10
