@@ -4,9 +4,9 @@ from src.utils.slack import SlackMessageWriter
 
 
 @LambdaResponse
-@SlackMessageWriter
 @ExceptionHandler
 @Logger
+@SlackMessageWriter
 def handler(event, context):
     return {
         'channel': 'general',

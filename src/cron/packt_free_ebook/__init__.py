@@ -10,9 +10,9 @@ ICON_URL = '{}/{}/{}'.format(ASSETS_URL, BRANCH, ICON_DIR)
 
 
 @LambdaResponse
-@SlackMessageWriter
 @ExceptionHandler
 @Logger
+@SlackMessageWriter
 def handler(event, context):
     ebook = get_today_free_ebook()
     slack_params = {
