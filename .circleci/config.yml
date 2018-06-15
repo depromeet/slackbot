@@ -21,7 +21,7 @@ jobs:
           name: run unit tests
           command: |
             . venv/bin/activate
-            python -m unittest src/tests/*.py
+            python -m unittest tests/**/*.py
   
   deploy-dev:
     docker:
@@ -43,10 +43,7 @@ jobs:
           name: deploy to development stage
           command: |
             . venv/bin/activate
-            echo $AWS_ACCESS_KEY_ID
-            echo $AWS_SECRET_ACCESS_KEY
             npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --overwrite
-            cat ~/.aws/credentials
             python deploy.py dev
 
   deploy-prod:
