@@ -22,6 +22,8 @@ package:
     - package-lock.json
     - README.md
     - requirements.txt
+    - serverless.yml
+    - tests/**
     - yarn.lock
     - venv/**
 

@@ -1,35 +1,27 @@
 version: 2
+
 jobs:
   build:
     docker:
       - image: choib24/ubuntu-python3-node8
-      
+
     steps:
       - checkout
-
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "requirements.txt" }}
-          - v1-dependencies-
 
       - run:
           name: install dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
+            pip install -U pip
             pip install -r requirements.txt
             npm install
-
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
 
       - run:
           name: run unit tests
           command: |
             . venv/bin/activate
-            python -m unittest src/tests/*.py
+            python -m unittest tests/**/*.py
   
   deploy-dev:
     docker:
@@ -43,13 +35,15 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
+            pip install -U pip
             pip install -r requirements.txt
             npm install
-      
+
+      - run:
           name: deploy to development stage
           command: |
             . venv/bin/activate
-            npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+            npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --overwrite
             python deploy.py dev
 
   deploy-prod:
@@ -64,35 +58,38 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
+            pip install -U pip
             pip install -r requirements.txt
             npm install
-      
+            
+      - run:
           name: deploy to production stage
           command: |
-            .venv/bin/activate
-            npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+            . venv/bin/activate
+            npx sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --overwrite
             python deploy.py prod
 
-workflows:	
-  version: 2	
-  deployment-process:	
-    jobs:	
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
       - build
-      - deploy-dev:	
-          requires:	
+      - deploy-dev:
+          requires:
             - build
-          filters:	
-            branches:	
-              only:	develop	
-      - hold:	
-          type: approval	
-          requires:	
+          filters:
+            branches:
+              only: develop
+      - hold:
+          type: approval
+          requires:
             - build
-            - deploy-dev	
-      - deploy-prod:	
-          requires:	
-              - build
-              - deploy-dev	
-          filters:	
-            branches:	
+          filters:
+            branches:
+              only: master
+      - deploy-prod:
+          requires:
+              - hold
+          filters:
+            branches:
               only: master
