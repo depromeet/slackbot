@@ -2,12 +2,6 @@ from src.utils.http import LambdaResponse, ExceptionHandler
 from src.utils.logging import Logger
 from src.utils.slack import SlackMessageWriter
 from src.api.worldcup.utils import generate_slack_message, fetch_worldcup_data
-from src import ASSETS_URL, BRANCH
-
-
-ICON_DIR = 'assets/images/football.png'
-
-ICON_URL = '{}/{}/{}'.format(ASSETS_URL, BRANCH, ICON_DIR)
 
 
 @LambdaResponse
