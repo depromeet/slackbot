@@ -25,7 +25,8 @@ class SlackMessageWriter:
                 params['channel'] = 'lab'
 
             params['token'] = SLACK_BOT_TOKEN
-            requests.post(URL, data=params)
+            slack_api_response = requests.post(URL, data=params).json()
             del params['token']
 
-        return params
+        response = {**params, **slack_api_response}
+        return response
