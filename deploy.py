@@ -23,9 +23,9 @@ if STAGE not in VALID_STAGE:
 os.system('pip install -r requirements.txt -t . --upgrade')
 
 # 2. Execute deployment
-os.system('npx sls deploy --stage {} --verbose'.format(STAGE))
 if STAGE == 'prod':
-    os.system('npx sls remove dev')
+    os.system('npx sls remove --stage dev')
+os.system('npx sls deploy --stage {} --verbose'.format(STAGE))
 
 # 3. Clean up directory
 requirements_file = open('requirements.txt', 'r')
