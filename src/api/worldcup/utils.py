@@ -80,6 +80,7 @@ def fetch_worldcup_data():
 
     yesterday_matches = []
     today_matches = []
+    tomorrow_matches = []
 
     for match in matches:
         local_date, local_time = match['datetime'].split('T')
@@ -88,7 +89,7 @@ def fetch_worldcup_data():
         matchtime_in_korean = calculate_korean_datetime(
             local_date,
             local_time,
-            14
+            KST_UTC_DIFFERENCE
         )
 
         date_difference = (matchtime_in_korean.date() - TODAY).days
@@ -107,10 +108,18 @@ def fetch_worldcup_data():
                     matchtime_in_korean
                 )
             )
+        elif date_difference == 1:
+            tomorrow_matches.append(
+                generate_match_data(
+                    match,
+                    matchtime_in_korean
+                )
+            )
 
     return {
         'yesterday': yesterday_matches,
-        'today': today_matches
+        'today': today_matches,
+        'tomorrow': tomorrow_matches
     }
 
 
@@ -156,6 +165,9 @@ def generate_slack_message(data):
     today_result = [
         generate_match_result(match) for match in data['today']
     ]
+    tomorrow_result = [
+        generate_match_result(match) for match in data['tomorrow']
+    ]
 
     sentence += '*어제의 경기* \n'
     yesterday_sentence = ''
@@ -163,10 +175,16 @@ def generate_slack_message(data):
         yesterday_sentence += (result + '\n')
     sentence += yesterday_sentence
 
-    sentence += '*오늘의 경기* \n'
+    sentence += '\n*오늘의 경기* \n'
     today_sentence = ''
     for result in today_result:
         today_sentence += (result + '\n')
     sentence += today_sentence
+
+    sentence += '\n*내일의 경기* \n'
+    tomorrow_sentence = ''
+    for result in tomorrow_result:
+        tomorrow_sentence += (result + '\n')
+    sentence += tomorrow_sentence
 
     return sentence
