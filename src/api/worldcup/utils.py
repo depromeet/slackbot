@@ -64,11 +64,13 @@ def generate_match_data(match, matchtime):
         'status': match['status'],
         'home': {
             'team': TEAMS[match['home_team']['code']],
-            'score': match['home_team']['goals']
+            'score': match['home_team']['goals'],
+            'pk': match['home_team']['penalties']
         },
         'away': {
             'team': TEAMS[match['away_team']['code']],
-            'score': match['away_team']['goals']
+            'score': match['away_team']['goals'],
+            'pk': match['away_team']['penalties']
         }
     }
 
@@ -148,12 +150,24 @@ def generate_match_result(match):
                 away['team']
             )
         else:
-            sentence += '{} {} : {} {}'.format(
-                home['team'],
-                home['score'],
-                away['score'],
-                away['team']
-            )
+            if home['pk'] > away['pk']:
+                sentence += '*{} {} ({})* : ({}) {} {}'.format(
+                    home['team'],
+                    home['score'],
+                    home['pk'],
+                    away['pk'],
+                    away['score'],
+                    away['team']
+                )
+            elif home['pk'] < away['pk']:
+                sentence += '{} {} ({}) : *({}) {} {}*'.format(
+                    home['team'],
+                    home['score'],
+                    home['pk'],
+                    away['pk'],
+                    away['score'],
+                    away['team']
+                )
     return sentence
 
 
