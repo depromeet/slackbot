@@ -29,15 +29,7 @@ package:
     - venv/**
 
 functions:
-  # 월드컵
-  worldcup:
-    handler: src/api/worldcup.handler
-    events:
-      - schedule:
-          name: execute-daily-9am
-          description: 매일 오전 9시에 해당 함수를 호출합니다.
-          rate: cron(0 0 ? * * *)
-          enabled: true
+  # 월드컵 - 비활성화
 
   # 비활성 채널 archive
   archiveInactiveChannels:
